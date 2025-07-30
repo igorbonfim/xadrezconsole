@@ -142,6 +142,21 @@ class PartidaDeXadrez
             throw new TabuleiroException("Você não pode se colocar em xeque!");
         }
 
+        Peca p1 = tab.peca(destino);
+
+        // #jogadaespecial promoção
+        if (p1 is Peao)
+        {
+            if ((p1.cor == Cor.Branca && destino.linha == 0) || (p1.cor == Cor.Preta && destino.linha == 7))
+            {
+                p1 = tab.retirarPeca(destino);
+                pecas.Remove(p1);
+                Peca dama = new Dama(tab, p1.cor);
+                tab.colocarPeca(dama, destino);
+                pecas.Add(dama);
+            }
+        }
+
         if (estaEmXeque(adversaria(jogadorAtual)))
         {
             xeque = true;
